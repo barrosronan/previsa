@@ -16,8 +16,3 @@ create table FuncionarioFilho(
     DataDeNascimento datetime not null,
     constraint fk_codFuncionario foreign key (CodFuncionario) references Funcionario(CodFuncionario)
 );
-
-SELECT f.CodFuncionario, f.Nome, f.DataNascimento, 
-	(SELECT COUNT(ff.CodFuncionario) FROM FuncionarioFilho ff WHERE f.CodFuncionario = ff.CodFuncionario)
-FROM Funcionario
-WHERE f.nome LIKE CONCAT('%','ro','%');
