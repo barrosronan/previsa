@@ -108,8 +108,7 @@ function validaData(data)
     });
  
     $("#salarioFuncionario").keyup(function(e){
-        if(e.keyCode != 8)
-            $(this).val(setMoeda($(this).val(),'R$ ', ',', '.'));
+        $(this).val(setMoeda($(this).val(),'R$ ', ',', '.'));
     });
     
     // ************************ FUNCIONÁRIO **************************
