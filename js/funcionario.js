@@ -10,22 +10,37 @@ function in_array(ch, arr)
     return false;
 }
 
-function setMoeda(valor, cifra, sepDec, sepMil)
-{
-    valor = valor.replace(cifra + ' ','').replace(/\D/g, '');
+//Formata para moeda.
+function formatToMoeda(valor, cifrao, decimal, milhar){
+    var valor = valor.replace(/\D/g, '');
     var valFormat = [];
     var retorno = '';
     for(var i = (valor.length -1); i >= 0; i--)
     {
-        if(valFormat.length == 2) valFormat.push(sepDec);
-        if(valFormat.length == 6 || valFormat.length == 10 || valFormat.length == 14) valFormat.push(sepMil);
+        if(valFormat.length == 2) valFormat.push(decimal);
+        if(valFormat.length == 6 || valFormat.length == 10 || 
+            valFormat.length == 14 || valFormat.length == 18 
+            || valFormat.length == 22) valFormat.push(milhar);
         valFormat.push(valor.charAt(i));
     }
 
     for(var i = (valFormat.length -1); i >= 0; i--)
         retorno += valFormat[i];
-    
-    return cifra + ' ' + retorno;
+
+    return cifrao + (cifrao ? ' ' : '') + retorno;
+}   
+
+$.fn.moeda = function(prop){
+    var config = $.extend({
+        cifrao:  prop.cifrao ? prop.cifrao : '',
+        decimal: prop.decimal ? prop.decimal : '.',
+        milhar: prop.milhar ? prop.milhar : ','
+    });
+
+    $(this).on('keyup', function(){
+        $(this).val(formatToMoeda($(this).val(), config.cifrao, config.decimal, config.milhar));
+    });
+    return this;
 }
 
 //Função que valida a data.
@@ -272,7 +287,7 @@ function validaData(data)
 
                 $('#nomeFuncionario').val(resposta.Nome);
                 $('#dataNascimentoFuncionario').val(dt);
-                $('#salarioFuncionario').val(setMoeda(resposta.Salario,'R$ ', ',', '.'));
+                $('#salarioFuncionario').val(formatToMoeda(resposta.Salario, 'R$', ',', '.'));
                 $('#atividadesFuncionario').val(resposta.Atividades);
                 $('#codfunc').val(resposta.CodFuncionario);
                 $cadFunc.attr('data-action','update');
