@@ -69,7 +69,7 @@
                         <label for="" class="label-control text-right">Salário</label>
                     </div>
                     <div class="col col-3">
-                        <input type="text" name="salarioFuncionario" id="salarioFuncionario" class="control" maxlength="21">
+                        <input type="text" name="salarioFuncionario" id="salarioFuncionario" class="control" maxlength="26">
                         <small class="alert">Informe o salário do funcionário.</small>
                     </div>
                 </div>
