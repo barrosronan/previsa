@@ -5,28 +5,24 @@ $(function(){
 
 function in_array(ch, arr)
 {
-    for(var i = 0; i < arr.length; i++)
-        if(ch == arr[i]) return true;
-    return false;
+    return arr.indexOf(ch) != -1;
 }
 
 //Formata para moeda.
-function formatToMoeda(valor, cifrao, decimal, milhar){
-    var valor = valor.replace(/\D/g, '');
-    var valFormat = [];
+function formatToMoeda(valor, cifrao = '', decimal = '.', milhar = ''){
+    var valor = valor.replace(/\D/g, '').substr(0, 18);
     var retorno = '';
+    var pos = [6,10,14,18,22];
     for(var i = (valor.length -1); i >= 0; i--)
     {
-        if(valFormat.length == 2) valFormat.push(decimal);
-        if(valFormat.length == 6 || valFormat.length == 10 || 
-            valFormat.length == 14 || valFormat.length == 18 
-            || valFormat.length == 22) valFormat.push(milhar);
-        valFormat.push(valor.charAt(i));
+        if(retorno.length == 2) retorno = decimal + retorno;
+        if(retorno.length >= 6)
+        {
+            if(in_array(retorno.length, pos))
+                retorno = milhar + retorno;
+        }
+        retorno = valor.charAt(i) + retorno;
     }
-
-    for(var i = (valFormat.length -1); i >= 0; i--)
-        retorno += valFormat[i];
-
     return cifrao + (cifrao ? ' ' : '') + retorno;
 }   
 
@@ -122,8 +118,10 @@ function validaData(data)
         $(this).val(num);
     });
  
-    $("#salarioFuncionario").keyup(function(e){
-        $(this).val(setMoeda($(this).val(),'R$ ', ',', '.'));
+    $("#salarioFuncionario").moeda({
+        cifrao: 'R$',
+        decimal: ',',
+        milhar: '.'
     });
     
     // ************************ FUNCIONÁRIO **************************
